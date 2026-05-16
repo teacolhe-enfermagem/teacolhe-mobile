@@ -1,16 +1,4 @@
-# CONTRIBUTING
-
-## Objetivo
-
-Este documento define os padrões de organização e contribuição do projeto.
-
-O objetivo é manter:
-- código organizado
-- arquitetura consistente
-- facilidade de manutenção
-- padrão entre todos os desenvolvedores
-
----
+# ORIENTAÇÕES DO PROJETO
 
 # Estrutura do projeto
 
