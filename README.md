@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# TEAcolhe
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Visão geral
 
-## Get started
+O **TEAcolhe** é um aplicativo que auxilia profissionais de enfermagem (auxiliares, técnicos e enfermeiros) no atendimento humanizado a pacientes com **Transtorno do Espectro Autista (TEA)**, considerando os níveis de suporte 1, 2 e 3, no ambiente hospitalar.
 
-1. Install dependencies
+## Estrutura do projeto
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+├── app/
+└── features/
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+**app/** → apenas rotas
 
-## Learn more
+**features/** → funcionalidades do app (telas, componentes próprios, schemas)
 
-To learn more about developing your project with Expo, look at the following resources:
+## Como rodar o projeto
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Pré-requisitos:
 
-## Join the community
+**Node.js 20+**
 
-Join our community of developers creating universal apps.
+**npm 10+**
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Clone o repositório
+```
+git clone https://github.com/teacolhe-enfermagem/teacolhe-mobile.git
+cd teacolhe-mobile
+```
+
+Instale as dependências
+
+```
+npm install
+```
+
+> [!WARNING]
+> ATENÇÃO: é preciso ter o node e o npm instalado em sua máquina
+
+
+Rode o projeto com
+
+```
+npx expo start
+```
+
+Escaneie o QR Code pelo aplicativo do Expo Go pelo seu celular
