@@ -6,7 +6,7 @@ interface Message {
   content: string
 }
 
-export const useChat = () => {
+export const useChat = (level: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export const useChat = () => {
       const botMessage: Message = {
         id: Date.now().toString(),
         role: "assistant",
-        content: "Olá! Sou o assistente do TEAcolhe. Como posso te ajudar?"
+        content: `Olá! Sou o assistente do TEAcolhe. Como posso te ajudar no atendimento de pacientes com TEA nível ${level}?`
       };
       setMessages((prev) => [...prev, botMessage]);
       setIsLoading(false);

@@ -14,10 +14,10 @@ export default function SelectLevelScreen() {
             <Text className="text-3xl text-center px-8">Escolha o nível do paciente</Text>
           </View>
 
-          <View className="gap-12">
-            <PatientCard levelNumber={1} backgroundColor={"#6CE568"} patientLevel={"Nível 1"} description={"Precisa de pouco suporte e possui maior autonomia."} />
-            <PatientCard levelNumber={2} backgroundColor={"#F5E453"} patientLevel={"Nível 2"} description={"Necessita de suporte moderado para comunicação e rotina."} />
-            <PatientCard levelNumber={3} backgroundColor={"#EE4D4D"} patientLevel={"Nível 3"} description={"Requer suporte intenso e acompanhamento contínuo."} />
+          <View className="gap-10">
+            <PatientCard level={"1"} backgroundColor={"#6CE568"} description={"Precisa de pouco suporte e possui maior autonomia."} />
+            <PatientCard level={"2"} backgroundColor={"#F5E453"} description={"Necessita de suporte moderado para comunicação e rotina."} />
+            <PatientCard level={"3"} backgroundColor={"#EE4D4D"} description={"Requer suporte intenso e acompanhamento contínuo."} />
           </View>
         </View>
       </ScrollView>

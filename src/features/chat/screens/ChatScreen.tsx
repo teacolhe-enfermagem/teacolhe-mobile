@@ -5,10 +5,12 @@ import { KeyboardStickyView } from "react-native-keyboard-controller";
 import EmptyChat from "../components/EmptyChat";
 import MessageBubble from "../components/MessageBubble";
 import { useChat } from "../hooks/useChat"
+import { useLocalSearchParams } from "expo-router";
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
-  const { data, prompt, setPrompt, handleNewChat, canSend, handleSend } = useChat();
+  const { level } = useLocalSearchParams<{ level: string }>();
+  const { data, prompt, setPrompt, handleNewChat, canSend, handleSend } = useChat(level);
   
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-white">
