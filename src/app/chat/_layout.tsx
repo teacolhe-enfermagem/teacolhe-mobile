@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
 import "@/global.css";
 import { useEffect } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 export default function RootLayout() {
   let [fontsLoaded] = useFonts({
@@ -20,10 +21,10 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
   
   return (
-    <>
+    <KeyboardProvider>
       <StatusBar style="dark" />
 
       <Stack screenOptions={{ headerShown: false }} />
-    </>
+    </KeyboardProvider>
   )
 }
