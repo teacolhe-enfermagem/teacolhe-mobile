@@ -3,7 +3,7 @@ import { Redirect } from "expo-router";
 
 export default function Index() {
 
-  return <Redirect href={"/chat"} />
+  return <Redirect href={"/patient/select-level"} />
 
   return (
     <View className="flex-1 items-center justify-center">
