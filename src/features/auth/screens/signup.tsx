@@ -9,6 +9,67 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [accepted, setAccepted] = useState(false);
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [termsError, setTermsError] = useState("");
+
+  const validate = () => {
+    let isValid = true;
+
+    if (!name.trim()) {
+      setNameError("O nome é obrigatório.");
+      isValid = false;
+    } else {
+      setNameError("");
+    }
+
+    if (!email.trim()) {
+      setEmailError("O e-mail é obrigatório.");
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Por favor, insira um e-mail válido.");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!password) {
+      setPasswordError("A senha é obrigatória.");
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError("A senha deve ter no mínimo 6 caracteres.");
+      isValid = false;
+    } else {
+      setPasswordError("");
+    }
+
+    if (!confirmPassword) {
+      setConfirmPasswordError("Confirmação de senha é obrigatória.");
+      isValid = false;
+    } else if (password !== confirmPassword) {
+      setConfirmPasswordError("As senhas não coincidem.");
+      isValid = false;
+    } else {
+      setConfirmPasswordError("");
+    }
+
+    if (!accepted) {
+      setTermsError("Você deve aceitar os termos.");
+      isValid = false;
+    } else {
+      setTermsError("");
+    }
+
+    return isValid;
+  };
+
+  const handleSignup = () => {
+    if (validate()) {
+      router.replace("/patient/select-level");
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-[#F3F3F3]">
@@ -28,20 +89,29 @@ export default function RegisterScreen() {
 
           {/* Card */}
           <View className="w-[90%] max-w-[360px] self-center mt-20 mb-8 rounded-[22px] border border-[#CFCFCF] bg-[#F3F3F3] px-6 py-8 shadow-sm flex-col gap-4">
-            <TextInput placeholder="Nome" placeholderTextColor="#B7B7B7" value={name} onChangeText={setName} className="h-[54px] rounded-xl border border-[#CFCFCF] bg-transparent px-4 text-[#333]" />
-            <TextInput placeholder="Email" placeholderTextColor="#B7B7B7" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} className="h-[54px] rounded-xl border border-[#CFCFCF] bg-transparent px-4 text-[#333]" />
-            <TextInput placeholder="Senha" placeholderTextColor="#B7B7B7" secureTextEntry value={password} onChangeText={setPassword} className="h-[54px] rounded-xl border border-[#CFCFCF] bg-transparent px-4 text-[#333]" />
-            <TextInput placeholder="Confirmar senha" placeholderTextColor="#B7B7B7" secureTextEntry value={confirmPassword} onChangeText={setConfirmPassword} className="h-[54px] rounded-xl border border-[#CFCFCF] bg-transparent px-4 text-[#333]" />
+            <TextInput placeholder="Nome" placeholderTextColor="#B7B7B7" value={name} onChangeText={(t) => { setName(t); setNameError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${nameError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+            {nameError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{nameError}</Text> : null}
 
-            <TouchableOpacity onPress={() => setAccepted(!accepted)} className="flex-row items-center pl-1 active:opacity-80">
-              <View className="w-5 h-5 border border-[#CFCFCF] mr-3 bg-white justify-center items-center rounded">
+            <TextInput placeholder="Email" placeholderTextColor="#B7B7B7" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={(t) => { setEmail(t); setEmailError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${emailError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+            {emailError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{emailError}</Text> : null}
+
+            <TextInput placeholder="Senha" placeholderTextColor="#B7B7B7" secureTextEntry value={password} onChangeText={(t) => { setPassword(t); setPasswordError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${passwordError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+            {passwordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{passwordError}</Text> : null}
+
+            <TextInput placeholder="Confirmar senha" placeholderTextColor="#B7B7B7" secureTextEntry value={confirmPassword} onChangeText={(t) => { setConfirmPassword(t); setConfirmPasswordError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${confirmPasswordError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+            {confirmPasswordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{confirmPasswordError}</Text> : null}
+
+            {/* Checkbox */}
+            <TouchableOpacity onPress={() => { setAccepted(!accepted); setTermsError(""); }} className="flex-row items-center pl-1 active:opacity-80">
+              <View className={`w-5 h-5 border mr-3 bg-white justify-center items-center rounded ${termsError ? "border-red-500" : "border-[#CFCFCF]"}`}>
                 {accepted && <View className="w-2.5 h-2.5 rounded bg-[#6ED7D3]" />}
               </View>
               <Text className="text-[14px] text-[#666]">Aceitar termos</Text>
             </TouchableOpacity>
+            {termsError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{termsError}</Text> : null}
 
             {/* Botão */}
-            <TouchableOpacity onPress={() => router.replace("/patient/select-level")} className="h-[54px] rounded-xl bg-[#6ED7D3] items-center justify-center active:opacity-90 active:scale-[0.98] transition-all mt-2">
+            <TouchableOpacity onPress={handleSignup} className="h-[54px] rounded-xl bg-[#6ED7D3] items-center justify-center active:opacity-90 active:scale-[0.98] transition-all mt-2">
               <Text className="text-white text-[24px] font-medium">Cadastrar</Text>
             </TouchableOpacity>
 
