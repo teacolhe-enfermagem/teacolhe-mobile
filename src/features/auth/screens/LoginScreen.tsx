@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Text, View, TextInput, Image, Pressable, KeyboardAvoidingView, Platform } from "react-native";
 import { router } from "expo-router";
+import * as SecureStore from "expo-secure-store";
+import { authService } from "../services/authService";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -8,6 +10,8 @@ export default function LoginScreen() {
   const [remember, setRemember] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [apiError, setApiError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const validate = () => {
     let isValid = true;
@@ -33,10 +37,26 @@ export default function LoginScreen() {
     return isValid;
   };
 
-  const handleLogin = () => {
-    if (validate()) {
+  const handleLogin = async () => {
+    if (!validate()) return;
+
+    setLoading(true);
+    setApiError("");
+
+    try {
+      await authService.login({
+        email,
+        password
+      });
+
+      const token = await SecureStore.getItemAsync("access_token");
       router.replace("/patient/select-level");
+    } catch (err: any) {
+      setApiError(err.response?.data?.message ?? "Erro ao relizar o login.")
+    } finally {
+      setLoading(false);
     }
+
   };
 
   return (
@@ -70,9 +90,11 @@ export default function LoginScreen() {
               <Text className="text-[#606060] text-sm">Me Lembre</Text>
             </Pressable>
 
+            {apiError ? <Text className="text-red-500 text-xs pl-1">{apiError}</Text> : null}
+
             {/* Botão de login */}
 
-            <Pressable onPress={handleLogin} className="bg-[#6FCFC7] py-3 rounded-xl items-center justify-center active:opacity-90 active:scale-[0.98] transition-all shadow-sm mt-auto">
+            <Pressable onPress={handleLogin} className={`${loading ? 'bg-[#a8e8e5]': 'bg-[#6ED7D3] active:opacity-90 active:scale-[0.98]'} py-3 rounded-xl items-center justify-center active:opacity-90 active:scale-[0.98] transition-all shadow-sm mt-auto`}>
               <Text className="text-white font-inter text-xl">Entrar</Text>
             </Pressable>
 
