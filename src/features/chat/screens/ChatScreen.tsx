@@ -31,6 +31,7 @@ export default function ChatScreen() {
         className="flex-1"
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <MessageBubble message={item} />}
+        removeClippedSubviews={false}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center p-6">
             <EmptyChat />
