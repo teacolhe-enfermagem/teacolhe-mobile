@@ -4,9 +4,11 @@ import { router } from "expo-router";
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
-  timeout: 10000,
+  timeout: 120000,
   headers: { "Content-Type": "application/json" },
 });
+
+console.log("API URL:", process.env.EXPO_PUBLIC_API_URL);
 
 // Injeta o token em toda requisição
 api.interceptors.request.use(async (config) => {
@@ -36,12 +38,21 @@ api.interceptors.response.use(
         // se o refresh falhar, limpa tudo e manda pro login
         await SecureStore.deleteItemAsync("access_token");
         await SecureStore.deleteItemAsync("refresh_token");
-        router.replace("/auth/login");
+        router.replace("/(public)/auth/login");
       }
     }
 
     return Promise.reject(error);
   }
 );
+
+// LOG pra entender pq o chat não ta respondendo
+api.interceptors.request.use(async (config) => {
+  const token = await SecureStore.getItemAsync("access_token");
+  console.log("[LOG] Token:", token);
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 
 export default api;

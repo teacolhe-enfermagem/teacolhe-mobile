@@ -22,16 +22,12 @@ type AuthResponse = {
 export const authService = {
   async login(payload: LoginPayload): Promise<AuthResponse> {
     const { data } = await api.post<AuthResponse>("/auth/login", payload);
-    await SecureStore.setItemAsync("access_token", data.access_token);
-    await SecureStore.setItemAsync("refresh_token", data.refresh_token);
     
     return data;
   },
 
   async register(payload: RegisterPayload): Promise<AuthResponse> {
     const { data } = await api.post<AuthResponse>("/auth/register", payload);
-    await SecureStore.setItemAsync("access_token", data.access_token);
-    await SecureStore.setItemAsync("refresh_token", data.refresh_token);
 
     return data;
   },

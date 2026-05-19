@@ -3,6 +3,7 @@ import { Text, View, TextInput, Image, Pressable, KeyboardAvoidingView, Platform
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { authService } from "../services/authService";
+import { useAuth } from "@/src/context/auth/AuthContext";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,8 @@ export default function LoginScreen() {
   const [passwordError, setPasswordError] = useState("");
   const [apiError, setApiError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { signIn } = useAuth();
 
   const validate = () => {
     let isValid = true;
@@ -49,8 +52,12 @@ export default function LoginScreen() {
         password
       });
 
-      const token = await SecureStore.getItemAsync("access_token");
-      router.replace("/patient/select-level");
+      const { access_token, refresh_token } = await authService.login({
+        email,
+        password
+      });
+      await signIn(access_token, refresh_token);
+      router.replace("/(protected)/patient/select-level");
     } catch (err: any) {
       setApiError(err.response?.data?.message ?? "Erro ao relizar o login.")
     } finally {

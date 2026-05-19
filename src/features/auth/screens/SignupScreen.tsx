@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { authService } from "@/src/features/auth/services/authService";
+import { useAuth } from "@/src/context/auth/AuthContext";
 
 export default function SignupScreen() {
   const [name, setName] = useState("");
@@ -18,6 +19,8 @@ export default function SignupScreen() {
   const [termsError, setTermsError] = useState("");
   const [apiError, setApiError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { signIn } = useAuth();
 
   const validate = () => {
     let isValid = true;
@@ -83,9 +86,14 @@ export default function SignupScreen() {
         confirm_password: confirmPassword,
       });
 
-      const token = await SecureStore.getItemAsync("access_token");
-      router.replace("/patient/select-level");
-      
+      const { access_token, refresh_token } = await authService.register({
+        name,
+        email,
+        password,
+        confirm_password: confirmPassword,
+      });
+      await signIn(access_token, refresh_token);
+      router.replace("/(protected)/patient/select-level");
     } catch (err: any) {
       setApiError(err.response?.data?.message ?? "Erro ao criar conta. Tente novamente.");
     } finally {
