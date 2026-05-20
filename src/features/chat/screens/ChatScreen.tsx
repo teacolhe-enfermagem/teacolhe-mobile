@@ -4,8 +4,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { KeyboardStickyView } from "react-native-keyboard-controller";
 import EmptyChat from "../components/EmptyChat";
 import MessageBubble from "../components/MessageBubble";
-import { useChat } from "../hooks/useChat"
+import { useChat } from "../hooks/useChat";
 import { useLocalSearchParams } from "expo-router";
+import
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
@@ -44,8 +45,10 @@ export default function ChatScreen() {
         
       <KeyboardStickyView offset={{ closed: 0, opened: insets.bottom }}>
         <View className="w-full p-6 bg-transparent">
-          <View className="flex flex-row items-center justify-center w-full gap-2">
+          <View className="flex flex-row items-end justify-center w-full gap-2">
             <TextInput
+              multiline
+              scrollEnabled={false}
               className="flex-1 border border-gray-300 rounded-2xl bg-white py-3"
               placeholder="Digite sua mensagem"
               value={prompt}
