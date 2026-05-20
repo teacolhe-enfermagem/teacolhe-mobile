@@ -6,12 +6,22 @@ import EmptyChat from "../components/EmptyChat";
 import MessageBubble from "../components/MessageBubble";
 import { useChat } from "../hooks/useChat";
 import { useLocalSearchParams } from "expo-router";
-import
+import { useRef, useEffect } from "react";
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
   const { level } = useLocalSearchParams<{ level: string }>();
   const { data, prompt, setPrompt, handleNewChat, canSend, handleSend } = useChat(level);
+
+  const flatListRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true })
+      }, 100)
+    }
+  }, [data])
   
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-white">
@@ -28,6 +38,7 @@ export default function ChatScreen() {
       </View>
 
       <FlatList
+        ref={flatListRef}
         data={data}
         className="flex-1"
         keyExtractor={(item) => item.id}
