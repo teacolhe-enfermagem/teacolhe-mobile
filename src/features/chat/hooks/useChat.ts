@@ -19,7 +19,6 @@ export const useChat = (level: string) => {
     ? [...messages, { id: "loading", role: "assistant" as const, content: "..." }]
     : messages;
 
-  // converte o formato da API pro formato interno
   function toMessage(apiMsg: { id: number; sender: "user" | "ai"; content: string }): Message {
     return {
       id: apiMsg.id.toString(),
@@ -35,7 +34,6 @@ export const useChat = (level: string) => {
     setPrompt("");
     setIsLoading(true);
 
-    // otimista: mostra a mensagem do usuário imediatamente
     const optimisticMessage: Message = {
       id: Date.now().toString(),
       role: "user",
@@ -48,7 +46,6 @@ export const useChat = (level: string) => {
       console.log("[LOG] Payload:", { nivel_chat: level, message: text });
 
       if (!chatId) {
-        // primeira mensagem → cria o chat
         const response = await chatService.createChat({
           nivel_chat: level,
           message: text,
@@ -57,10 +54,9 @@ export const useChat = (level: string) => {
         setChatId(response.id);
         setMessages(response.messages.map(toMessage));
       } else {
-        // mensagens seguintes → envia no chat existente
         const response = await chatService.sendMessage(chatId, { message: text });
         setMessages((prev) => [
-          ...prev.filter((m) => m.id !== optimisticMessage.id), // remove otimista
+          ...prev.filter((m) => m.id !== optimisticMessage.id),
           ...response.messages.map(toMessage),
         ]);
       }
