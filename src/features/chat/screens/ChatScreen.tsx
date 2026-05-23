@@ -7,6 +7,7 @@ import MessageBubble from "../components/MessageBubble";
 import { useChat } from "../hooks/useChat";
 import { useLocalSearchParams } from "expo-router";
 import { useRef, useEffect } from "react";
+import { router } from "expo-router";
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
@@ -28,12 +29,16 @@ export default function ChatScreen() {
       <View className="px-6" style={{ paddingTop: insets.top }}>
         <View className="flex-row items-center justify-between w-full">
           <Pressable
+            onPress={() => router.push("/(protected)/patient/select-level")} className="active:opacity-50">
+            <Image className="w-6 h-6" source={require("@/assets/chat/back.png")} />
+          </Pressable>
+
+          <Text className="text-center text-[#6FCFC7]" pointerEvents="none">TEA<Text className="text-black text-xl">colhe</Text></Text>
+
+          <Pressable
             onPress={handleNewChat} className="active:opacity-50">
             <Image className="w-8 h-8" source={require("@/assets/chat/new-message.png")} />
           </Pressable>
-          <Text className="text-center text-[#6FCFC7]" pointerEvents="none">TEA<Text className="text-black text-xl">colhe</Text></Text>
-
-          <View className="w-8" />
         </View>
       </View>
 
