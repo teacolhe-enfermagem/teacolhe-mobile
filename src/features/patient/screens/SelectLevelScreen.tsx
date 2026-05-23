@@ -1,4 +1,4 @@
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PatientCard from "../components/PatientCard";
@@ -9,7 +9,13 @@ export default function SelectLevelScreen() {
   return (
     <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-white">
       <ScrollView showsVerticalScrollIndicator={false} className="flex-1" contentContainerStyle={{ paddingBottom: insets.bottom + 12, paddingTop: insets.top }}>
+        <View className="flex-row items-center justify-between w-full px-6">
+          <Pressable>
+            <Image className="w-9 h-9" source={require("@/assets/patient/logout.png")} />
+          </Pressable>
+        </View>
         <View className="items-center justify-center p-6 w-full">
+
           <View className="items-center justify-center mb-10">
             <Text className="text-3xl text-center px-8">Escolha o nível do paciente</Text>
           </View>
