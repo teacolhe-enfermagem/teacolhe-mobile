@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, Text, View, TextInput, Image, Pressable, Platform } from "react-native";
+import { ScrollView, Text, View, TextInput, Image, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { authService } from "../services/authService";
@@ -35,14 +35,11 @@ export default function LoginScreen() {
     setApiError("");
 
     try {
-      const { access_token, refresh_token } = await authService.login({
-        email,
-        password
-      });
-      await signIn(access_token, refresh_token);
+      const { access_token, refresh_token } = await authService.login({ email, password });
+      await signIn(access_token, refresh_token, email);
       router.replace("/(protected)/patient/select-level");
     } catch (err: any) {
-      setApiError(err.response?.data?.message ?? "Erro ao relizar o login.")
+      setApiError(err.response?.data?.detail ?? "Erro ao realizar o login.");
     } finally {
       setLoading(false);
     }
@@ -62,10 +59,26 @@ export default function LoginScreen() {
           <KeyboardStickyView offset={{ closed: 0, opened: insets.bottom }}>
             <View className="flex-1 items-center">
               <View className="bg-[#EDEDED] w-[90%] max-w-[340px] min-h-[405px] rounded-[20px] border border-[#C0C0C0] pt-12 pb-10 px-6 shadow-sm flex-col justify-start gap-4 -mt-24">
-                <TextInput placeholder="Email" placeholderTextColor="#A8A8A8" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={(t) => { setEmail(t); setEmailError(""); }} className={`bg-[#EFEFEF] px-4 py-2.5 rounded-xl border text-slate-800 text-base ${emailError ? "border-red-500" : "border-[#C0C0C0]"}`} />
-                {emailError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{emailError}</Text> : null}
                 
-                <TextInput placeholder="Senha" placeholderTextColor="#A8A8A8" secureTextEntry value={password} onChangeText={(t) => { setPassword(t); setPasswordError(""); }} className={`bg-[#EFEFEF] px-4 py-2.5 rounded-xl border text-slate-800 text-base ${passwordError ? "border-red-500" : "border-[#C0C0C0]"}`} />
+                <TextInput
+                  placeholder="Email"
+                  placeholderTextColor="#A8A8A8"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={email}
+                  onChangeText={(t) => { setEmail(t); setEmailError(""); setApiError(""); }}
+                  className={`bg-[#EFEFEF] px-4 py-2.5 rounded-xl border text-slate-800 text-base ${emailError ? "border-red-500" : "border-[#C0C0C0]"}`}
+                />
+                {emailError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{emailError}</Text> : null}
+
+                <TextInput
+                  placeholder="Senha"
+                  placeholderTextColor="#A8A8A8"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={(t) => { setPassword(t); setPasswordError(""); setApiError(""); }}
+                  className={`bg-[#EFEFEF] px-4 py-2.5 rounded-xl border text-slate-800 text-base ${passwordError ? "border-red-500" : "border-[#C0C0C0]"}`}
+                />
                 {passwordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{passwordError}</Text> : null}
 
                 {/* Checkbox */}
@@ -76,12 +89,20 @@ export default function LoginScreen() {
                   <Text className="text-[#606060] text-sm">Me Lembre</Text>
                 </Pressable>
 
-                {apiError ? <Text className="text-red-500 text-xs pl-1">{apiError}</Text> : null}
-
+                {apiError ? (
+                  <Text className="text-red-600 text-sm text-start">{apiError}</Text>
+                ) : null}
                 {/* Botão de login */}
-                <Pressable onPress={handleLogin} className={`${loading ? 'bg-[#a8e8e5]': 'bg-[#6ED7D3] active:opacity-90 active:scale-[0.98]'} py-3 rounded-xl items-center justify-center active:opacity-90 active:scale-[0.98] transition-all shadow-sm mt-auto`}>
-                  <Text className="text-white font-inter text-xl">Entrar</Text>
+                <Pressable
+                  onPress={handleLogin}
+                  disabled={loading}
+                  className={`${loading ? "bg-[#a8e8e5]" : "bg-[#6ED7D3] active:opacity-90"} py-3 rounded-xl items-center justify-center shadow-sm mt-auto`}
+                >
+                  <Text className="text-white font-inter text-xl">
+                    {loading ? "Entrando..." : "Entrar"}
+                  </Text>
                 </Pressable>
+
 
                 {/* Link de cadastro */}
                 <View className="flex-row justify-center items-center">
@@ -90,6 +111,7 @@ export default function LoginScreen() {
                     <Text className="text-[#6FCFC7] font-semibold text-sm"> Cadastre-se</Text>
                   </Pressable>
                 </View>
+
               </View>
             </View>
           </KeyboardStickyView>
