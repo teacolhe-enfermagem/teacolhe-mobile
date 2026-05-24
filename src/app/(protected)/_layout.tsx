@@ -13,8 +13,6 @@ export default function ProtectedLayout() {
     )
   }
 
-  console.log("ProtectedLayout renderizou — isAuthenticated:", isAuthenticated);
-
   if (!isAuthenticated) return <Redirect href="/" />
 
   return <Slot />
