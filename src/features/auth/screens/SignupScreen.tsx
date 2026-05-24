@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { authService } from "@/src/features/auth/services/authService";
 import { useAuth } from "@/src/context/auth/AuthContext";
+import { signupSchema, SignupFormData } from "../schemas/signupSchema";
 
 export default function SignupScreen() {
   const [name, setName] = useState("");
@@ -22,70 +22,24 @@ export default function SignupScreen() {
 
   const { signIn } = useAuth();
 
-  const validate = () => {
-    let isValid = true;
-
-    if (!name.trim()) {
-      setNameError("O nome é obrigatório.");
-      isValid = false;
-    } else {
-      setNameError("");
-    }
-
-    if (!email.trim()) {
-      setEmailError("O e-mail é obrigatório.");
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError("Por favor, insira um e-mail válido.");
-      isValid = false;
-    } else {
-      setEmailError("");
-    }
-
-    if (!password) {
-      setPasswordError("A senha é obrigatória.");
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError("A senha deve ter no mínimo 6 caracteres.");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
-
-    if (!confirmPassword) {
-      setConfirmPasswordError("Confirmação de senha é obrigatória.");
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      setConfirmPasswordError("As senhas não coincidem.");
-      isValid = false;
-    } else {
-      setConfirmPasswordError("");
-    }
-
-    if (!accepted) {
-      setTermsError("Você deve aceitar os termos.");
-      isValid = false;
-    } else {
-      setTermsError("");
-    }
-
-    return isValid;
-  };
-
+  
   const handleSignup = async () => {
-    if (!validate()) return;
+    const result = signupSchema.safeParse({ name, email, password, confirmPassword, accepted });
+
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
+      setNameError(errors.name?.[0] ?? "");
+      setEmailError(errors.email?.[0] ?? "");
+      setPasswordError(errors.password?.[0] ?? "");
+      setConfirmPasswordError(errors.confirmPassword?.[0] ?? "");
+      setTermsError(errors.accepted?.[0] ?? "");
+      return;
+    }
 
     setLoading(true);
     setApiError("");
 
     try {
-      await authService.register({
-        name,
-        email,
-        password,
-        confirm_password: confirmPassword,
-      });
-
       const { access_token, refresh_token } = await authService.register({
         name,
         email,
