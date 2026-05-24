@@ -1,5 +1,4 @@
 import api from "@/src/services/api";
-import * as SecureStore from "expo-secure-store";
 
 type LoginPayload = {
   email: string;

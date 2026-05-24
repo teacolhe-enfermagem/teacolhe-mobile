@@ -24,6 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function signOut() {
+    console.log("signOut chamado, isAuthenticated agora é false");
     await SecureStore.deleteItemAsync("access_token");
     await SecureStore.deleteItemAsync("refresh_token");
     setIsAuthenticated(false);
