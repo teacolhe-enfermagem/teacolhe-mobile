@@ -1,37 +1,43 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { ScrollView, View, Text, Pressable, Image } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <View className="flex-1 bg-[#F3F3F3] items-center justify-start pt-80 px-6">
-      
-      {/* Logo */}
-      <Image
-        source={require("@/assets/chat/logo2.png")}
-        className="w-60 h-60 mb-2"
-        resizeMode="contain"
-      />
+    <SafeAreaView edges={["top", "bottom"]} className="flex-1 bg-[#F3F3F3]">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1" contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom + 12, paddingTop: insets.top }}>
+        <View className="flex-1 items-center justify-center p-6 gap-5 w-full">
+          <View className="justify-center items-center">
+            <Image
+              source={require("@/assets/chat/logo2.png")}
+              className="w-60 h-60"
+              resizeMode="contain"
+            />
 
+            <Text className="text-center text-black text-2xl">
+              Cuidando com empatia,{"\n"}
+              acolhendo cada singularidade.
+            </Text>
+          </View>
 
-      {/* Subtítulo */}
-      <Text className="text-center text-black text-[20px] leading-6 mb-72">
-        Cuidando com empatia,{"\n"}
-        acolhendo cada singularidade.
-      </Text>
+          <View className="flex-col w-full gap-5 mt-16">
+            <Pressable onPress={() => router.push("/(public)/auth/login") } className="w-full h-14 bg-[#6FCFC7] rounded-full items-center justify-center active:opacity-50">
+              <Text className="text-white text-lg">
+                Login
+              </Text>
+            </Pressable>
 
-      {/* Botão Login */}
-      <TouchableOpacity className="w-full h-14 bg-[#6FCFC7] rounded-full items-center justify-center mb-4">
-        <Text className="text-white text-base font-medium">
-          Login
-        </Text>
-      </TouchableOpacity>
-
-      {/* Botão Cadastro */}
-      <TouchableOpacity className="w-full h-14 border border-[#6FCFC7] rounded-full items-center justify-center">
-        <Text className="text-[#74D4CF] text-base font-medium">
-          Cadastre-se
-        </Text>
-      </TouchableOpacity>
-
-    </View>
+            <Pressable onPress={() => router.push("/(public)/auth/signup")} className="w-full h-14 border border-[#6FCFC7] rounded-full items-center justify-center active:opacity-40">
+              <Text className="text-[#74D4CF] text-lg">
+                Cadastre-se
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
