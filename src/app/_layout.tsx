@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as NavigationBar from "expo-navigation-bar";
 import "@/global.css";
 import { useEffect } from "react";
+import { AuthProvider } from "../context/auth/AuthContext";
 
 export default function RootLayout() {
   let [fontsLoaded] = useFonts({
@@ -20,10 +21,10 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
   
   return (
-    <>
+    <AuthProvider>
       <StatusBar style="dark" />
 
       <Stack screenOptions={{ headerShown: false }} />
-    </>
+    </AuthProvider>
   )
 }

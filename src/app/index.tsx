@@ -1,13 +1,18 @@
-import { Text, View } from "react-native";
+import  HomeScreen  from "@/src/features/home/screens/HomeScreen";
 import { Redirect } from "expo-router";
+import { useAuth } from "../context/auth/AuthContext";
+import { View, ActivityIndicator } from "react-native";
 
 export default function Index() {
+  const { isAuthenticated, isLoading } = useAuth();
 
-  return <Redirect href={"/chat"} />
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator />
+      </View>
+    )
+  }
 
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-red-500">Edit app/index.tsx to edit this screen.</Text>
-    </View>
-  );
+  return isAuthenticated ? <Redirect href="/(protected)/patient/select-level" /> : <HomeScreen />;
 }
