@@ -50,7 +50,7 @@ export default function SignupScreen() {
         password,
         confirm_password: confirmPassword,
       });
-      await signIn(access_token, refresh_token);
+      await signIn(access_token, refresh_token, name);
       router.replace("/(protected)/patient/select-level");
     } catch (err: any) {
       setApiError(err.response?.data?.message ?? "Erro ao criar conta. Tente novamente.");
