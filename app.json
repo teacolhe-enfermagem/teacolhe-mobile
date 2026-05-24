@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/logo/logo.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.williamdev45.teacolhe"
     },
     "web": {
       "output": "static",
@@ -45,6 +46,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7ac6556a-0422-4103-9c18-a9469c03d78e"
+      }
     }
   }
 }
