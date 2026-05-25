@@ -66,6 +66,7 @@ export default function ChatScreen() {
               multiline
               scrollEnabled={false}
               className="flex-1 border border-gray-300 rounded-2xl bg-white py-3"
+              placeholderTextColor="#9CA3AF"
               placeholder="Digite sua mensagem"
               value={prompt}
               onChangeText={(text) => setPrompt(text)}
