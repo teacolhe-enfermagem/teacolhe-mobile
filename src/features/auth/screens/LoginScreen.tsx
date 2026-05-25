@@ -36,7 +36,9 @@ export default function LoginScreen() {
 
     try {
       const { access_token, refresh_token } = await authService.login({ email, password });
-      await signIn(access_token, refresh_token, email);
+      const { name } = await authService.getUser(access_token);
+
+      await signIn(access_token, refresh_token, name);
       router.replace("/(protected)/patient/select-level");
     } catch (err: any) {
       setApiError(err.response?.data?.detail ?? "Erro ao realizar o login.");
