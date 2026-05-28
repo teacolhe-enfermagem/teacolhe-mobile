@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-const passwordPattern =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/;
-
 export const signupSchema = z
   .object({
     name: z
@@ -18,11 +15,7 @@ export const signupSchema = z
 
     password: z
       .string()
-      .min(1, "A senha é obrigatória.")
-      .regex(
-        passwordPattern,
-        "A senha deve conter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial."
-      ),
+      .min(8, "A senha deve conter no mínimo 8 caracteres."),
 
     confirmPassword: z.string().min(1, "Confirmação de senha é obrigatória."),
 
