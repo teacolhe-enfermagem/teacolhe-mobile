@@ -16,6 +16,8 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [accepted, setAccepted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -26,7 +28,6 @@ export default function SignupScreen() {
 
   const { signIn } = useAuth();
 
-  
   const handleSignup = async () => {
     const result = signupSchema.safeParse({ name, email, password, confirmPassword, accepted });
 
@@ -75,16 +76,49 @@ export default function SignupScreen() {
 
           <KeyboardStickyView offset={{ closed: 0, opened: insets.bottom }}>
             <View className="w-[90%] max-w-[360px] self-center mt-20 mb-8 rounded-[22px] border border-[#CFCFCF] bg-[#F3F3F3] px-6 py-8 shadow-sm flex-col gap-4">
+
               <TextInput placeholder="Nome" placeholderTextColor="#B7B7B7" value={name} onChangeText={(t) => { setName(t); setNameError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${nameError ? "border-red-500" : "border-[#CFCFCF]"}`} />
               {nameError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{nameError}</Text> : null}
 
               <TextInput placeholder="Email" placeholderTextColor="#B7B7B7" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={(t) => { setEmail(t); setEmailError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${emailError ? "border-red-500" : "border-[#CFCFCF]"}`} />
               {emailError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{emailError}</Text> : null}
 
-              <TextInput placeholder="Senha" placeholderTextColor="#B7B7B7" secureTextEntry value={password} onChangeText={(t) => { setPassword(t); setPasswordError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${passwordError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+              <View className={`h-[54px] flex-row items-center rounded-xl border bg-transparent ${passwordError ? "border-red-500" : "border-[#CFCFCF]"}`}>
+                <TextInput
+                  placeholder="Senha"
+                  placeholderTextColor="#B7B7B7"
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={(t) => { setPassword(t); setPasswordError(""); }}
+                  className="flex-1 h-full px-4 text-[#333]"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="px-3 justify-center items-center active:opacity-60">
+                  <Image
+                    source={showPassword ? require("@/assets/auth/eye-open.png") : require("@/assets/auth/eye-closed.png")}
+                    className="w-5 h-5"
+                    style={{ tintColor: "#5a5a5a" }}
+                  />
+                </TouchableOpacity>
+              </View>
               {passwordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{passwordError}</Text> : null}
 
-              <TextInput placeholder="Confirmar senha" placeholderTextColor="#B7B7B7" secureTextEntry value={confirmPassword} onChangeText={(t) => { setConfirmPassword(t); setConfirmPasswordError(""); }} className={`h-[54px] rounded-xl border bg-transparent px-4 text-[#333] ${confirmPasswordError ? "border-red-500" : "border-[#CFCFCF]"}`} />
+              <View className={`h-[54px] flex-row items-center rounded-xl border bg-transparent ${confirmPasswordError ? "border-red-500" : "border-[#CFCFCF]"}`}>
+                <TextInput
+                  placeholder="Confirmar senha"
+                  placeholderTextColor="#B7B7B7"
+                  secureTextEntry={!showConfirmPassword}
+                  value={confirmPassword}
+                  onChangeText={(t) => { setConfirmPassword(t); setConfirmPasswordError(""); }}
+                  className="flex-1 h-full px-4 text-[#333]"
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)} className="px-3 justify-center items-center active:opacity-60">
+                  <Image
+                    source={showConfirmPassword ? require("@/assets/auth/eye-open.png") : require("@/assets/auth/eye-closed.png")}
+                    className="w-5 h-5"
+                    style={{ tintColor: "#5a5a5a" }}
+                  />
+                </TouchableOpacity>
+              </View>
               {confirmPasswordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{confirmPasswordError}</Text> : null}
 
               <TouchableOpacity onPress={() => { setAccepted(!accepted); setTermsError(""); }} className="flex-row items-center pl-1 active:opacity-80">
@@ -113,6 +147,7 @@ export default function SignupScreen() {
                   <Text className="text-[13px] font-semibold text-[#6ED7D3]">Entrar</Text>
                 </TouchableOpacity>
               </View>
+
             </View>
           </KeyboardStickyView>
         </ScrollView>

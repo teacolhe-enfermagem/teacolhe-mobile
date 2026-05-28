@@ -14,6 +14,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [apiError, setApiError] = useState<string>("");
@@ -61,7 +62,7 @@ export default function LoginScreen() {
           <KeyboardStickyView offset={{ closed: 0, opened: insets.bottom }}>
             <View className="flex-1 items-center">
               <View className="bg-[#EDEDED] w-[90%] max-w-[340px] min-h-[405px] rounded-[20px] border border-[#C0C0C0] pt-12 pb-10 px-6 shadow-sm flex-col justify-start gap-4 -mt-24">
-                
+
                 <TextInput
                   placeholder="Email"
                   placeholderTextColor="#A8A8A8"
@@ -73,14 +74,30 @@ export default function LoginScreen() {
                 />
                 {emailError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{emailError}</Text> : null}
 
-                <TextInput
-                  placeholder="Senha"
-                  placeholderTextColor="#A8A8A8"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={(t) => { setPassword(t); setPasswordError(""); setApiError(""); }}
-                  className={`bg-[#EFEFEF] px-4 py-2.5 rounded-xl border text-slate-800 text-base ${passwordError ? "border-red-500" : "border-[#C0C0C0]"}`}
-                />
+                <View className={`flex-row items-center bg-[#EFEFEF] rounded-xl border ${passwordError ? "border-red-500" : "border-[#C0C0C0]"}`}>
+                  <TextInput
+                    placeholder="Senha"
+                    placeholderTextColor="#A8A8A8"
+                    secureTextEntry={!showPassword}
+                    value={password}
+                    onChangeText={(t) => { setPassword(t); setPasswordError(""); setApiError(""); }}
+                    className="flex-1 px-4 py-2.5 text-slate-800 text-base"
+                  />
+                  <Pressable
+                    onPress={() => setShowPassword(!showPassword)}
+                    className="px-3 justify-center items-center active:opacity-60"
+                  >
+                    <Image
+                      source={
+                        showPassword
+                          ? require("@/assets/auth/eye-open.png")
+                          : require("@/assets/auth/eye-closed.png")
+                      }
+                      className="w-5 h-5"
+                      style={{ tintColor: "#5a5a5a" }}
+                    />
+                  </Pressable>
+                </View>
                 {passwordError ? <Text className="text-red-500 text-xs mt-[-10px] pl-1">{passwordError}</Text> : null}
 
                 {/* Checkbox */}
@@ -94,6 +111,7 @@ export default function LoginScreen() {
                 {apiError ? (
                   <Text className="text-red-600 text-sm text-start">{apiError}</Text>
                 ) : null}
+
                 {/* Botão de login */}
                 <Pressable
                   onPress={handleLogin}
@@ -104,7 +122,6 @@ export default function LoginScreen() {
                     {loading ? "Entrando..." : "Entrar"}
                   </Text>
                 </Pressable>
-
 
                 {/* Link de cadastro */}
                 <View className="flex-row justify-center items-center">
